@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Leaf, Sun, Utensils } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import region1 from '../../assets/region1.png';
+import region2 from '../../assets/region2.jpg';
 
 const Accommodations = () => {
   const { language, t } = useLanguage();
@@ -129,11 +131,13 @@ const Accommodations = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-[16/10] bg-brand-sage/10 rounded-3xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base md:text-lg">
-                    {t('accommodationPage.img1Caption')}
-                  </span>
-                </div>
+                <img 
+                  src={region1} 
+                  alt="Local Architecture & Nature" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                 Local Architecture & Nature
@@ -148,11 +152,13 @@ const Accommodations = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-[16/10] bg-brand-forest/10 rounded-3xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base md:text-lg text-[#546B41]">
-                    {t('accommodationPage.img2Caption')}
-                  </span>
-                </div>
+                <img 
+                  src={region2} 
+                  alt="Sustainable Gastronomy Start" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                 Sustainable Gastronomy Start

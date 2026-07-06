@@ -47,11 +47,24 @@ const Hero = ({ data }: { data?: any }) => {
     }
   };
 
+  const getLocalizedText = (value: string | undefined, fallback: string) => {
+    return value && value.trim() ? value : fallback;
+  };
+
   const t = {
-      title: data ? (language === 'fr' ? data.title_fr : data.title_en) : defaultContent[language].title,
-      desc: data ? (language === 'fr' ? data.subtitle_1_fr : data.subtitle_1_en) : defaultContent[language].desc,
-      cta: data ? (language === 'fr' ? data.button_1_label_fr : data.button_1_label_en) : defaultContent[language].cta,
-      link: data?.button_1_url || "/contact"
+    title: getLocalizedText(
+      data ? (language === 'fr' ? data.title_fr : data.title_en) : undefined,
+      defaultContent[language].title
+    ),
+    desc: getLocalizedText(
+      data ? (language === 'fr' ? data.subtitle_1_fr : data.subtitle_1_en) : undefined,
+      defaultContent[language].desc
+    ),
+    cta: getLocalizedText(
+      data ? (language === 'fr' ? data.button_1_label_fr : data.button_1_label_en) : undefined,
+      defaultContent[language].cta
+    ),
+    link: getLocalizedText(data?.button_1_url, '/contact'),
   };
 
   return (
@@ -94,7 +107,7 @@ const Hero = ({ data }: { data?: any }) => {
           className="flex"
         >
           <Link 
-            to="/contact" 
+            to={t.link} 
             className="group relative px-10 py-5 bg-white text-brand-deep text-xs font-bold uppercase tracking-[0.2em] transition-all duration-500 hover:text-white"
           >
             <span className="relative z-10">{t.cta}</span>
@@ -131,15 +144,14 @@ const ShakshoukaPeninsula = ({ data }: { data?: any }) => {
   };
 
   const t = {
-      label: defaultContent[language].label,
-      // Hero already uses title_en/fr — this section uses subtitle_1 as its heading
-      title: data ? (language === 'fr' ? (data.subtitle_1_fr || data.title_fr) : (data.subtitle_1_en || data.title_en)) : defaultContent[language].title,
-      subtitle: data ? (language === 'fr' ? (data.subtitle_2_fr || data.subtitle_1_fr) : (data.subtitle_2_en || data.subtitle_1_en)) : defaultContent[language].subtitle,
-      p1: data ? (language === 'fr' ? data.body_1_fr : data.body_1_en) : defaultContent[language].p1,
-      p2: data ? (language === 'fr' ? data.body_2_fr : data.body_2_en) : defaultContent[language].p2,
-      cta1: defaultContent[language].cta1,
-      cta2: defaultContent[language].cta2
-  };
+      label: data ? (language === 'fr' ? data.shakshouka_label_fr : data.shakshouka_label_en) : defaultContent[language].label,
+      title: data ? (language === 'fr' ? data.shakshouka_title_fr : data.shakshouka_title_en) : defaultContent[language].title,
+      subtitle: data ? (language === 'fr' ? data.shakshouka_subtitle_fr : data.shakshouka_subtitle_en) : defaultContent[language].subtitle,
+      p1: data ? (language === 'fr' ? data.shakshouka_p1_fr : data.shakshouka_p1_en) : defaultContent[language].p1,
+      p2: data ? (language === 'fr' ? data.shakshouka_p2_fr : data.shakshouka_p2_en) : defaultContent[language].p2,
+      cta1: data ? (language === 'fr' ? data.shakshouka_cta1_fr : data.shakshouka_cta1_en) : defaultContent[language].cta1,
+      cta2: data ? (language === 'fr' ? data.shakshouka_cta2_fr : data.shakshouka_cta2_en) : defaultContent[language].cta2,
+    };
 
   return (
     <section className="section-padding bg-brand-cream overflow-hidden">
@@ -151,14 +163,14 @@ const ShakshoukaPeninsula = ({ data }: { data?: any }) => {
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="eyebrow"><span>{t.label}</span></div>
+            <div className="eyebrow"><span dangerouslySetInnerHTML={{ __html: t.label }} /></div>
             <div className="space-y-4">
                 <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-brand-deep break-words overflow-hidden" dangerouslySetInnerHTML={{ __html: t.title }} />
-                <h3 className="text-lg md:text-xl font-serif italic text-brand-forest mb-6" dangerouslySetInnerHTML={{ __html: t.subtitle }} />
+                <h3 className="text-lg md:text-xl font-serif italic text-brand-red mb-6" dangerouslySetInnerHTML={{ __html: t.subtitle }} />
             </div>
-            <div className="space-y-4 text-brand-deep/70 text-base leading-relaxed mb-8 max-w-[550px] break-words overflow-hidden">
-              <div dangerouslySetInnerHTML={{ __html: t.p1 }} />
-              <div dangerouslySetInnerHTML={{ __html: t.p2 }} />
+            <div className="space-y-4 text-brand-deep text-base leading-relaxed mb-8 max-w-[550px] break-words overflow-hidden">
+              <div className="mb-4" dangerouslySetInnerHTML={{ __html: t.p1 }} />
+              <div className="mb-4" dangerouslySetInnerHTML={{ __html: t.p2 }} />
             </div>
             <div className="flex flex-nowrap gap-4">
               <Link to="/la-region/a-propos" className="btn btn-primary">{t.cta1}</Link>
@@ -189,10 +201,45 @@ const ShakshoukaPeninsula = ({ data }: { data?: any }) => {
   );
 };
 
-const MediterraneanReversal = () => {
+interface MediterraneanReversalProps {
+  data?: {
+    // Legacy shared fields (for backwards compatibility)
+    subtitle_1_en?: string;
+    subtitle_1_fr?: string;
+    subtitle_2_en?: string;
+    subtitle_2_fr?: string;
+    body_1_en?: string;
+    body_1_fr?: string;
+    body_2_en?: string;
+    body_2_fr?: string;
+    body_3_en?: string;
+    body_3_fr?: string;
+    body_4_en?: string;
+    body_4_fr?: string;
+    button_1_label_en?: string;
+    reversal_label_en?: string;
+    reversal_label_fr?: string;
+    reversal_title_en?: string;
+    reversal_title_fr?: string;
+    reversal_subtitle_en?: string;
+    reversal_subtitle_fr?: string;
+    reversal_tertiary_en?: string;
+    reversal_tertiary_fr?: string;
+    reversal_p1_en?: string;
+    reversal_p1_fr?: string;
+    reversal_p2_en?: string;
+    reversal_p2_fr?: string;
+    reversal_cta1_en?: string;
+    reversal_cta1_fr?: string;
+    reversal_cta2_en?: string;
+    reversal_cta2_fr?: string;
+  } | null;
+}
+
+const MediterraneanReversal = ({ data }: MediterraneanReversalProps) => {
   const { language } = useLanguage();
 
-  const content = {
+  const defaultContent = {
     fr: {
       label: "Le Changement",
       title: "Le Renversement Méditerranéen",
@@ -215,7 +262,16 @@ const MediterraneanReversal = () => {
     }
   };
 
-  const t = content[language];
+  const t = {
+    label: language === 'fr' ? (data?.reversal_label_fr || defaultContent.fr.label) : (data?.reversal_label_en || defaultContent.en.label),
+    title: language === 'fr' ? (data?.reversal_title_fr || defaultContent.fr.title) : (data?.reversal_title_en || defaultContent.en.title),
+    subtitle: language === 'fr' ? (data?.reversal_subtitle_fr || defaultContent.fr.subtitle) : (data?.reversal_subtitle_en || defaultContent.en.subtitle),
+    tertiary: language === 'fr' ? (data?.reversal_tertiary_fr || defaultContent.fr.tertiary) : (data?.reversal_tertiary_en || defaultContent.en.tertiary),
+    p1: language === 'fr' ? (data?.reversal_p1_fr || defaultContent.fr.p1) : (data?.reversal_p1_en || defaultContent.en.p1),
+    p2: language === 'fr' ? (data?.reversal_p2_fr || defaultContent.fr.p2) : (data?.reversal_p2_en || defaultContent.en.p2),
+    cta1: language === 'fr' ? (data?.reversal_cta1_fr || defaultContent.fr.cta1) : (data?.reversal_cta1_en || defaultContent.en.cta1),
+    cta2: language === 'fr' ? (data?.reversal_cta2_fr || defaultContent.fr.cta2) : (data?.reversal_cta2_en || defaultContent.en.cta2),
+  };
 
   return (
     <section className="section-padding bg-brand-sage/10 overflow-hidden">
@@ -246,13 +302,13 @@ const MediterraneanReversal = () => {
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="eyebrow"><span>{t.label}</span></div>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-brand-deep">{t.title}</h2>
-            <h3 className="text-lg md:text-xl font-serif italic text-brand-forest mb-6">{t.subtitle}</h3>
-            <div className="space-y-6 text-brand-deep/70 text-base leading-relaxed mb-8 max-w-[550px]">
-              <h4 className="text-brand-deep font-serif text-xl">{t.tertiary}</h4>
-              <p>{t.p1}</p>
-              <p>{t.p2}</p>
+            <div className="eyebrow"><span dangerouslySetInnerHTML={{ __html: t.label }} /></div>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-brand-deep" dangerouslySetInnerHTML={{ __html: t.title }} />
+            <h3 className="text-lg md:text-xl font-serif italic text-brand-red mb-6" dangerouslySetInnerHTML={{ __html: t.subtitle }} />
+            <div className="space-y-6 text-brand-deep text-base leading-relaxed mb-8 max-w-[550px] break-words overflow-hidden">
+              <h4 className="text-brand-deep font-serif text-xl mb-4" dangerouslySetInnerHTML={{ __html: t.tertiary }} />
+              <div className="mb-4 break-words" dangerouslySetInnerHTML={{ __html: t.p1 }} />
+              <div className="mb-4 break-words" dangerouslySetInnerHTML={{ __html: t.p2 }} />
             </div>
             <div className="flex flex-nowrap gap-4">
               <Link to="/la-region/projet-candidature" className="btn btn-primary">{t.cta1}</Link>
@@ -265,10 +321,38 @@ const MediterraneanReversal = () => {
   );
 };
 
-const RedGoldFragrance = () => {
+interface RedGoldFragranceProps {
+  data?: {
+    fragrance_label_en?: string;
+    fragrance_label_fr?: string;
+    fragrance_title_en?: string;
+    fragrance_title_fr?: string;
+    fragrance_subtitle_en?: string;
+    fragrance_subtitle_fr?: string;
+    fragrance_quote_en?: string;
+    fragrance_quote_fr?: string;
+    fragrance_olive_title_en?: string;
+    fragrance_olive_title_fr?: string;
+    fragrance_olive_desc_en?: string;
+    fragrance_olive_desc_fr?: string;
+    fragrance_harissa_title_en?: string;
+    fragrance_harissa_title_fr?: string;
+    fragrance_harissa_desc_en?: string;
+    fragrance_harissa_desc_fr?: string;
+    fragrance_citrus_title_en?: string;
+    fragrance_citrus_title_fr?: string;
+    fragrance_citrus_desc_en?: string;
+    fragrance_citrus_desc_fr?: string;
+    fragrance_cta_en?: string;
+    fragrance_cta_fr?: string;
+    fragrance_cta_url?: string;
+  } | null;
+}
+
+const RedGoldFragrance = ({ data }: RedGoldFragranceProps) => {
   const { language } = useLanguage();
 
-  const content = {
+  const defaultContent = {
     fr: {
       label: "Les Saveurs Cardinales",
       title: "Or Rouge et Parfum Liquide",
@@ -297,7 +381,19 @@ const RedGoldFragrance = () => {
     }
   };
 
-  const t = content[language];
+  const t = {
+    label: language === 'fr' ? (data?.fragrance_label_fr || defaultContent.fr.label) : (data?.fragrance_label_en || defaultContent.en.label),
+    title: language === 'fr' ? (data?.fragrance_title_fr || defaultContent.fr.title) : (data?.fragrance_title_en || defaultContent.en.title),
+    subtitle: language === 'fr' ? (data?.fragrance_subtitle_fr || defaultContent.fr.subtitle) : (data?.fragrance_subtitle_en || defaultContent.en.subtitle),
+    quote: language === 'fr' ? (data?.fragrance_quote_fr || defaultContent.fr.quote) : (data?.fragrance_quote_en || defaultContent.en.quote),
+    oliveTitle: language === 'fr' ? (data?.fragrance_olive_title_fr || defaultContent.fr.oliveTitle) : (data?.fragrance_olive_title_en || defaultContent.en.oliveTitle),
+    oliveDesc: language === 'fr' ? (data?.fragrance_olive_desc_fr || defaultContent.fr.oliveDesc) : (data?.fragrance_olive_desc_en || defaultContent.en.oliveDesc),
+    harissaTitle: language === 'fr' ? (data?.fragrance_harissa_title_fr || defaultContent.fr.harissaTitle) : (data?.fragrance_harissa_title_en || defaultContent.en.harissaTitle),
+    harissaDesc: language === 'fr' ? (data?.fragrance_harissa_desc_fr || defaultContent.fr.harissaDesc) : (data?.fragrance_harissa_desc_en || defaultContent.en.harissaDesc),
+    citrusTitle: language === 'fr' ? (data?.fragrance_citrus_title_fr || defaultContent.fr.citrusTitle) : (data?.fragrance_citrus_title_en || defaultContent.en.citrusTitle),
+    citrusDesc: language === 'fr' ? (data?.fragrance_citrus_desc_fr || defaultContent.fr.citrusDesc) : (data?.fragrance_citrus_desc_en || defaultContent.en.citrusDesc),
+    cta: language === 'fr' ? (data?.fragrance_cta_fr || defaultContent.fr.cta) : (data?.fragrance_cta_en || defaultContent.en.cta),
+  };
 
   return (
     <section className="section-padding bg-brand-cream overflow-hidden">
@@ -309,21 +405,21 @@ const RedGoldFragrance = () => {
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="eyebrow"><span>{t.label}</span></div>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-brand-deep">{t.title}</h2>
-            <h3 className="text-lg md:text-xl font-serif italic text-brand-forest mb-6">{t.subtitle}</h3>
+            <div className="eyebrow"><span dangerouslySetInnerHTML={{ __html: t.label }} /></div>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 text-brand-deep" dangerouslySetInnerHTML={{ __html: t.title }} />
+            <h3 className="text-lg md:text-xl font-serif italic text-brand-red mb-6" dangerouslySetInnerHTML={{ __html: t.subtitle }} />
             <div className="space-y-6 text-brand-deep/70 text-base leading-relaxed mb-8 max-w-[550px]">
-              <p className="italic font-serif text-lg text-brand-deep leading-relaxed">{t.quote}</p>
+              <div className="italic font-serif text-lg text-brand-deep leading-relaxed" dangerouslySetInnerHTML={{ __html: t.quote }} />
               
               <div className="grid gap-6">
                 <div>
-                  <h4 className="text-brand-deep font-serif text-xl mb-1">{t.oliveTitle}</h4>
-                  <p className="text-sm">{t.oliveDesc}</p>
+                  <h4 className="text-brand-deep font-serif text-xl mb-1" dangerouslySetInnerHTML={{ __html: t.oliveTitle }} />
+                  <div className="text-sm" dangerouslySetInnerHTML={{ __html: t.oliveDesc }} />
                 </div>
 
                 <div>
-                  <h4 className="text-brand-deep font-serif text-xl mb-1">{t.harissaTitle}</h4>
-                  <p className="text-sm">{t.harissaDesc}</p>
+                  <h4 className="text-brand-deep font-serif text-xl mb-1" dangerouslySetInnerHTML={{ __html: t.harissaTitle }} />
+                  <div className="text-sm" dangerouslySetInnerHTML={{ __html: t.harissaDesc }} />
                 </div>
 
                 <div>
@@ -500,25 +596,58 @@ const PartnersInPurpose = ({ data }: { data?: any }) => {
   );
 };
 
-const Manifesto = () => {
+interface ManifestoProps {
+  data?: {
+    subtitle_2_en?: string;
+    subtitle_2_fr?: string;
+    body_1_en?: string;
+    body_1_fr?: string;
+    body_2_en?: string;
+    body_2_fr?: string;
+    body_3_en?: string;
+    body_3_fr?: string;
+    body_4_en?: string;
+    body_4_fr?: string;
+    body_5_en?: string;
+    body_5_fr?: string;
+    body_6_en?: string;
+    body_6_fr?: string;
+  } | null;
+}
+
+const Manifesto = ({ data }: ManifestoProps) => {
   const { language } = useLanguage();
 
-  const content = {
+  const defaultContent = {
     fr: {
-      label: "Le Manifeste",
-      title: "Un Héritage Gastronomique en Mouvement",
-      p1: "Cap Bon Discover n'est pas seulement un guide, c'est une célébration de l'authenticité. Nous mettons en lumière les artisans, les chefs et les producteurs qui font battre le cœur de cette péninsule unique.",
-      p2: "Notre mission : préserver le savoir-faire ancestral tout en embrassant l'innovation culinaire de demain."
+      manifesto: "Lettres à un Ami",
+      verse1: "Une campagne ce n'est pas seulement une campagne. C'est la terre d'un grand-père, une huile pressée à l'ancienne, une harissa que l'on partage.",
+      verse2: "Un événement ce n'est pas seulement un événement. C'est une rencontre de producteurs, un sourire d'enfant découvrant un atelier de poterie, une nuit d'été sous les étoiles.",
+      verse3: "Ce n'est pas seulement une candidature. C'est un mouvement. Une promesse. Un avenir où chaque visite nourrit la terre et ceux qui la cultivent.",
+      verse4: "",
+      verse5: "",
+      verse6: ""
     },
     en: {
-      label: "The Manifesto",
-      title: "A Gastronomic Heritage in Motion",
-      p1: "Cap Bon Discover is more than a guide; it is a celebration of authenticity. We highlight the artisans, chefs, and producers who are the heartbeat of this unique peninsula.",
-      p2: "Our mission: to preserve ancestral knowledge while embracing the culinary innovation of tomorrow."
+      manifesto: "Red Gold and Liquid Fragrance",
+      verse1: "Harissa, Olive Oil, and Citrus Blossoms",
+      verse2: "Across the peninsula’s hills and plains, olive groves stretch toward the sea, producing oils that have nourished Mediterranean kitchens for nearly three millennia. In late summer, fields of chili peppers ripen under the sun before being transformed into harissa—the bold red paste that has become Tunisia’s most celebrated culinary export.",
+      verse3: "This is not just a candidacy. It is a movement. A promise. A future where every visit nourishes the land and those who cultivate it.",
+      verse4: "",
+      verse5: "",
+      verse6: ""
     }
   };
 
-  const t = content[language];
+  const t = {
+    manifesto: language === 'fr' ? (data?.subtitle_2_fr || defaultContent.fr.manifesto) : (data?.subtitle_2_en || defaultContent.en.manifesto),
+    verse1: language === 'fr' ? (data?.body_1_fr || defaultContent.fr.verse1) : (data?.body_1_en || defaultContent.en.verse1),
+    verse2: language === 'fr' ? (data?.body_2_fr || defaultContent.fr.verse2) : (data?.body_2_en || defaultContent.en.verse2),
+    verse3: language === 'fr' ? (data?.body_3_fr || defaultContent.fr.verse3) : (data?.body_3_en || defaultContent.en.verse3),
+    verse4: language === 'fr' ? (data?.body_4_fr || defaultContent.fr.verse4) : (data?.body_4_en || defaultContent.en.verse4),
+    verse5: language === 'fr' ? (data?.body_5_fr || defaultContent.fr.verse5) : (data?.body_5_en || defaultContent.en.verse5),
+    verse6: language === 'fr' ? (data?.body_6_fr || defaultContent.fr.verse6) : (data?.body_6_en || defaultContent.en.verse6),
+  };
 
   return (
     <section className="section-padding bg-brand-cream">
@@ -530,11 +659,11 @@ const Manifesto = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="eyebrow"><span>{t.label}</span></div>
-            <h2 className="text-3xl md:text-5xl text-brand-deep mb-6">{t.title}</h2>
+            <h2 className="text-3xl md:text-5xl text-brand-deep mb-6" dangerouslySetInnerHTML={{ __html: t.manifesto }} />
             <div className="text-brand-deep/70 space-y-4 text-base leading-relaxed">
-              <p>{t.p1}</p>
-              <p>{t.p2}</p>
+              <div dangerouslySetInnerHTML={{ __html: t.verse1 }} />
+              <div dangerouslySetInnerHTML={{ __html: t.verse2 }} />
+              <div dangerouslySetInnerHTML={{ __html: t.verse3 }} />
             </div>
           </motion.div>
           <motion.div
@@ -905,7 +1034,21 @@ const ImageStrip = () => {
   );
 };
 
-const AreaOfMonth = () => {
+interface TourismMonthProps {
+  data?: {
+    // Actual DB field names
+    subtitle_3_en?: string;
+    subtitle_3_fr?: string;
+    body_4_en?: string;
+    body_4_fr?: string;
+    body_5_en?: string;
+    body_5_fr?: string;
+    button_2_label_en?: string;
+    button_2_label_fr?: string;
+  } | null;
+}
+
+const TourOfMonth = ({ data }: TourismMonthProps) => {
   const { language } = useLanguage();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -914,7 +1057,7 @@ const AreaOfMonth = () => {
   });
   const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
-  const content = {
+  const defaultContent = {
     fr: {
       label: "L'Endroit du Mois",
       title: "Le Fort de Kélibia",
@@ -929,7 +1072,12 @@ const AreaOfMonth = () => {
     }
   };
 
-  const t = content[language];
+  const t = {
+    label: language === 'fr' ? (data?.subtitle_3_fr || defaultContent.fr.label) : (data?.subtitle_3_en || defaultContent.en.label),
+    title: language === 'fr' ? (data?.body_4_fr || defaultContent.fr.title) : (data?.body_4_en || defaultContent.en.title),
+    desc: language === 'fr' ? (data?.body_5_fr || defaultContent.fr.desc) : (data?.body_5_en || defaultContent.en.desc),
+    cta: language === 'fr' ? (data?.button_2_label_fr || defaultContent.fr.cta) : (data?.button_2_label_en || defaultContent.en.cta),
+  };
 
   return (
     <section ref={ref} className="section-padding bg-cream overflow-hidden">
@@ -952,11 +1100,9 @@ const AreaOfMonth = () => {
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="eyebrow"><span>{t.label}</span></div>
-            <h2 className="text-5xl md:text-7xl mb-8">{t.title}</h2>
-            <p className="text-muted text-xl leading-relaxed mb-10">
-              {t.desc}
-            </p>
+            <div className="eyebrow"><span dangerouslySetInnerHTML={{ __html: t.label }} /></div>
+            <h2 className="text-5xl md:text-7xl mb-8" dangerouslySetInnerHTML={{ __html: t.title }} />
+            <div className="text-muted text-xl leading-relaxed mb-10" dangerouslySetInnerHTML={{ __html: t.desc }} />
             <Link to="/tourisme/itineraires" className="btn btn-primary">{t.cta}</Link>
           </motion.div>
         </div>
@@ -965,11 +1111,68 @@ const AreaOfMonth = () => {
   );
 };
 
-const ContactSection = () => {
+interface ContactSectionProps {
+  data?: {
+    // Actual DB field names
+    subtitle_4_en?: string;
+    subtitle_4_fr?: string;
+    body_6_en?: string;
+    body_6_fr?: string;
+    body_7_en?: string;
+    body_7_fr?: string;
+    button_3_label_en?: string;
+    button_3_label_fr?: string;
+  } | null;
+}
+
+const ContactSection = ({ data }: ContactSectionProps) => {
   const { language } = useLanguage();
   const formRef = React.useRef<HTMLDivElement>(null);
   const [formData, setFormData] = React.useState({ name: '', email: '', message: '' });
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const defaultContent = {
+    fr: {
+      title: "Envoyez-nous un message",
+      successTitle: "Message envoyé !",
+      successMessage: "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais.",
+      sendAnother: "Envoyer un autre message",
+      nameLabel: "Nom",
+      emailLabel: "Email",
+      messageLabel: "Message",
+      contactTitle: "Contact",
+      addressLabel: "Adresse",
+      phoneLabel: "Téléphone",
+      emailLabelContact: "Email"
+    },
+    en: {
+      title: "Send us a message",
+      successTitle: "Message Sent!",
+      successMessage: "Thank you for your message. Our team will get back to you as soon as possible.",
+      sendAnother: "Send another message",
+      nameLabel: "Name",
+      emailLabel: "Email",
+      messageLabel: "Message",
+      contactTitle: "Contact",
+      addressLabel: "Address",
+      phoneLabel: "Phone",
+      emailLabelContact: "Email"
+    }
+  };
+
+  const t = {
+    title: language === 'fr' ? (data?.subtitle_4_fr || defaultContent.fr.title) : (data?.subtitle_4_en || defaultContent.en.title),
+    successTitle: language === 'fr' ? (data?.body_6_fr || defaultContent.fr.successTitle) : (data?.body_6_en || defaultContent.en.successTitle),
+    successMessage: language === 'fr' ? (data?.body_7_fr || defaultContent.fr.successMessage) : (data?.body_7_en || defaultContent.en.successMessage),
+    sendAnother: language === 'fr' ? (data?.button_3_label_fr || defaultContent.fr.sendAnother) : (data?.button_3_label_en || defaultContent.en.sendAnother),
+    nameLabel: defaultContent[language].nameLabel,
+    emailLabel: defaultContent[language].emailLabel,
+    messageLabel: defaultContent[language].messageLabel,
+    contactTitle: defaultContent[language].contactTitle,
+    addressLabel: defaultContent[language].addressLabel,
+    phoneLabel: defaultContent[language].phoneLabel,
+    emailLabelContact: defaultContent[language].emailLabelContact,
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1001,7 +1204,7 @@ const ContactSection = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-2xl font-serif italic text-brand-deep mb-8">{language === 'fr' ? 'Envoyez-nous un message' : 'Send us a message'}</h2>
+          <h2 className="text-2xl font-serif italic text-brand-deep mb-8" dangerouslySetInnerHTML={{ __html: t.title }} />
           
           {status === 'success' ? (
             <motion.div 
@@ -1012,26 +1215,21 @@ const ContactSection = () => {
               <div className="w-16 h-16 bg-brand-sage rounded-full flex items-center justify-center mx-auto mb-4 text-white">
                 <Check size={32} />
               </div>
-              <h3 className="text-xl font-serif italic text-brand-forest mb-2">
-                {language === 'fr' ? 'Message envoyé !' : 'Message Sent!'}
-              </h3>
-              <p className="text-brand-forest/70 text-sm">
-                {language === 'fr' 
-                  ? "Merci pour votre message. Notre équipe vous répondra dans les plus brefs délais."
-                  : "Thank you for your message. Our team will get back to you as soon as possible."}
-              </p>
+              <h3 className="text-xl font-serif italic text-brand-forest mb-2" dangerouslySetInnerHTML={{ __html: t.successTitle }} />
+              <div className="text-brand-forest/70 text-sm" dangerouslySetInnerHTML={{ __html: t.successMessage }} />
               <button 
                 onClick={() => setStatus('idle')}
                 className="mt-6 text-brand-red text-xs font-bold uppercase tracking-widest hover:underline"
               >
-                {language === 'fr' ? 'Envoyer un autre message' : 'Send another message'}
+                {t.sendAnother}
               </button>
             </motion.div>
           ) : (
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">Name</label>
+                <label htmlFor="contact-name" className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">{t.nameLabel}</label>
                 <input 
+                  id="contact-name"
                   type="text" 
                   required
                   value={formData.name}
@@ -1040,8 +1238,9 @@ const ContactSection = () => {
                 />
               </div>
               <div>
-                <label className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">Email</label>
+                <label htmlFor="contact-email" className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">{t.emailLabel}</label>
                 <input 
+                  id="contact-email"
                   type="email" 
                   required
                   value={formData.email}
@@ -1050,8 +1249,9 @@ const ContactSection = () => {
                 />
               </div>
               <div>
-                <label className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">Message</label>
+                <label htmlFor="contact-message" className="block text-[10px] uppercase font-bold tracking-widest text-brand-forest mb-2">{t.messageLabel}</label>
                 <textarea 
+                  id="contact-message"
                   rows={6} 
                   required
                   value={formData.message}
@@ -1113,21 +1313,24 @@ const ContactSection = () => {
 const Home = () => {
   const { content: dynamicContent, loading } = usePageContent('home', null);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <Hero data={dynamicContent} />
       <ShakshoukaPeninsula data={dynamicContent} />
-      <MediterraneanReversal />
-      <Manifesto />
-      <RedGoldFragrance />
+      <MediterraneanReversal data={dynamicContent} />
+      <Manifesto data={dynamicContent} />
+      <RedGoldFragrance data={dynamicContent} />
       <Timeline data={dynamicContent} />
-      <AreaOfMonth />
+      <TourOfMonth data={dynamicContent} />
       <Products data={dynamicContent} />
-      {/* <ImageStrip /> */}
       <Gallery data={dynamicContent} />
       <FAQ data={dynamicContent} />
       <PartnersInPurpose data={dynamicContent} />
-      <ContactSection />
+      <ContactSection data={dynamicContent} />
     </>
   );
 };

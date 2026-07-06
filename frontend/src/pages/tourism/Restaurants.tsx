@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import Courtyard from '../../assets/Courtyard.jpg';
+import supply from '../../assets/supply.jpg';
 
 const Restaurants = () => {
   const { language, t } = useLanguage();
@@ -103,11 +105,13 @@ const Restaurants = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-square bg-brand-sage/10 rounded-3xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base md:text-lg">
-                    {t('diningPage.img1Caption')}
-                  </span>
-                </div>
+                <img 
+                  src={Courtyard} 
+                  alt="Courtyard Interiority" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                 Courtyard Interiority
@@ -122,11 +126,13 @@ const Restaurants = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-[4/5] bg-brand-forest/10 rounded-3xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base md:text-lg text-[#546B41]">
-                    {t('diningPage.img2Caption')}
-                  </span>
-                </div>
+                <img 
+                  src={supply} 
+                  alt="Direct Supply Chain" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                 Direct Supply Chain

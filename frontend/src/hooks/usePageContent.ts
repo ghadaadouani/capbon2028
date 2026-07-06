@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface PageContent {
   title_en: string;
@@ -25,30 +25,34 @@ interface PageContent {
   [key: string]: any;
 }
 
+// initialContent is intentionally excluded from deps to prevent re-fetch loops
+// when callers pass inline object literals. Only slug changes should re-fetch.
 export const usePageContent = (slug: string, initialContent: any) => {
   const [content, setContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(true);
+  const initialContentRef = useRef(initialContent);
 
   useEffect(() => {
     const fetchContent = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`/api/pages/${slug}`);
         if (res.ok) {
           const data = await res.json();
           setContent(data);
         } else {
-          setContent(initialContent);
+          setContent(initialContentRef.current);
         }
       } catch (err) {
         console.error(`Failed to fetch content for ${slug}:`, err);
-        setContent(initialContent);
+        setContent(initialContentRef.current);
       } finally {
         setLoading(false);
       }
     };
 
     fetchContent();
-  }, [slug, initialContent]);
+  }, [slug]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { content, loading };
 };

@@ -153,6 +153,56 @@ export const runMigrations = async () => {
             await query(`ALTER TABLE page_content ADD COLUMN partners_cta2_en TEXT`).catch(() => {});
             await query(`ALTER TABLE page_content ADD COLUMN partners_cta2_fr TEXT`).catch(() => {});
         }
+
+        // Section-specific fields for homepage blocks (to avoid content sharing)
+        if (!columns.includes('shakshouka_label_en')) {
+            // Shakshouka Peninsula Section
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_label_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_label_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_title_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_title_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_subtitle_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_subtitle_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_p1_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_p1_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_p2_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_p2_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_cta1_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_cta1_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_cta2_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN shakshouka_cta2_fr TEXT`).catch(() => {});
+
+            // Mediterranean Reversal Section
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_label_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_label_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_title_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_title_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_subtitle_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_subtitle_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_tertiary_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_tertiary_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_p1_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_p1_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_p2_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_p2_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_cta1_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_cta1_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_cta2_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN reversal_cta2_fr TEXT`).catch(() => {});
+        }
+
+        // Itineraries page fields
+        if (!columns.includes('body_5_en')) {
+            await query(`ALTER TABLE page_content ADD COLUMN body_5_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN body_5_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN footer_text_1_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN footer_text_1_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN footer_text_2_en TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN footer_text_2_fr TEXT`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN quote_1_en ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN quote_1_fr ${longtext}`).catch(() => {});
+            await query(`ALTER TABLE page_content ADD COLUMN itineraries_data ${longtext}`).catch(() => {});
+        }
     } catch (e) {
         // Migrations are optional, fail silently
     }
@@ -200,6 +250,7 @@ export const runMigrations = async () => {
             meta_title_fr VARCHAR(255),
             meta_desc_en TEXT,
             meta_desc_fr TEXT,
+            category VARCHAR(100),
             inline_image_caption_en TEXT,
             inline_image_caption_fr TEXT,
             quote_en TEXT,
@@ -343,6 +394,7 @@ export const runMigrations = async () => {
         // Migration: Add inline_image_caption and quote fields to blog_posts
         console.log('📦 Running blog_posts column migration...');
         const columnsToAdd = [
+            { name: 'category', type: 'VARCHAR(100)' },
             { name: 'inline_image_caption_en', type: 'TEXT' },
             { name: 'inline_image_caption_fr', type: 'TEXT' },
             { name: 'quote_en', type: 'TEXT' },

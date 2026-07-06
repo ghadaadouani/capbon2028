@@ -84,6 +84,9 @@ const BlogDetail = () => {
 
   const title = language === 'fr' ? article.title_fr : article.title_en;
   const body = language === 'fr' ? article.body_fr : article.body_en;
+  const formattedDate = article.published_at
+    ? new Date(article.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+    : '';
 
   return (
     <div className="bg-brand-cream pb-24">
@@ -113,7 +116,7 @@ const BlogDetail = () => {
                   {article.category}
                 </span>
                 <span className="inline-block bg-white/10 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full border border-white/20">
-                  {article.published_at}
+                  {formattedDate}
                 </span>
               </div>
               <h1 className="text-white text-4xl md:text-7xl font-serif italic leading-[1.1] mb-8">
@@ -151,9 +154,17 @@ const BlogDetail = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="prose prose-xl prose-brand-deep leading-[1.8] font-sans text-brand-deep/80"
+            className="prose prose-xl prose-brand-deep leading-[1.8] font-sans text-brand-deep/80 max-w-none overflow-x-hidden"
           >
-            <div dangerouslySetInnerHTML={{ __html: body }} />
+            <div 
+              dangerouslySetInnerHTML={{ __html: body }} 
+              className="break-words"
+              style={{
+                wordWrap: 'break-word',
+                overflowWrap: 'break-word',
+                maxWidth: '100%'
+              }}
+            />
           </motion.div>
           
           <div className="mt-20 pt-12 border-t border-brand-forest/10 flex items-center justify-between">

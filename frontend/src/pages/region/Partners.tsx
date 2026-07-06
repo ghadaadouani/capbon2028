@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { usePageContent } from '../../hooks/usePageContent';
 import FAQ from '../../components/FAQ';
+import badira from '../../assets/badira.jpg';
 
 const foundingPartners = [
   { name: "Sawa Taste of Tunisia", desc: "Private Sector & Experience Development" },
@@ -110,18 +111,19 @@ const Partners = () => {
               </div>
             </motion.div>
 
-            {/* Portrait Image Placeholder */}
+            {/* Portrait Image */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               className="relative aspect-[4/5] bg-brand-sage/10 rounded-3xl overflow-hidden shadow-2xl"
             >
-              <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-sm">
-                <span className="text-brand-deep/30 font-serif italic text-base md:text-lg">
-                  {t('partnersPage.gdaCaption')}
-                </span>
-              </div>
+              <img 
+                src={badira} 
+                alt="Portrait of an ambassadrice" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
               <div className="absolute inset-0 bg-brand-forest/5 opacity-0 hover:opacity-100 transition-opacity" />
             </motion.div>
           </div>

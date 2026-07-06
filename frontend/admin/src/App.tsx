@@ -22,7 +22,7 @@ const App = () => {
   const handleLogin = (token: string) => {
     localStorage.setItem('admin_token', token);
     setIsAuthenticated(true);
-    setTimeout(() => navigate('/admin/dashboard'), 100);
+    navigate('/admin/dashboard', { replace: true });
   };
 
   const handleLogout = () => {

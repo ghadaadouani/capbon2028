@@ -65,11 +65,11 @@
   }
 
   .btn-primary {
-    @apply bg-brand-forest text-white border border-brand-forest;
+    @apply bg-brand-red text-white border border-brand-red;
   }
 
   .btn-primary::before {
-    @apply bg-brand-red;
+    @apply bg-brand-forest;
   }
 
   .btn-secondary {
@@ -81,15 +81,15 @@
   }
 
   .btn-outline {
-    @apply bg-transparent text-brand-deep border border-brand-forest/30;
+    @apply bg-transparent text-brand-red border border-brand-red/30;
   }
 
   .btn-outline::before {
-    @apply bg-brand-forest;
+    @apply bg-brand-red;
   }
   
   .btn-outline:hover {
-    @apply text-white border-brand-forest;
+    @apply text-white border-brand-red;
   }
 
   .eyebrow {
@@ -102,7 +102,7 @@
   }
 
   .eyebrow span {
-    @apply font-sans text-[10px] font-medium uppercase tracking-[0.15em] text-brand-forest;
+    @apply font-sans text-[10px] font-medium uppercase tracking-[0.15em] text-brand-red;
   }
 }
 

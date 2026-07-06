@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Shovel, ChefHat, Sprout, Recycle, HeartHandshake, Ban } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import supply from '../../assets/supply.jpg';
+import region2 from '../../assets/region2.jpg';
 
 const Mice = () => {
   const { language, t } = useLanguage();
@@ -133,11 +135,13 @@ const Mice = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-[4/3] bg-brand-sage/10 rounded-3xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base md:text-lg">
-                    {t('micePage.img1Caption')}
-                  </span>
-                </div>
+                <img 
+                  src={supply} 
+                  alt="Interactive Learning" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                 Interactive Learning
@@ -152,11 +156,13 @@ const Mice = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-[4/3] bg-brand-forest/10 rounded-3xl overflow-hidden relative group shadow-xl">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base md:text-lg text-[#546B41]">
-                    {t('micePage.img2Caption')}
-                  </span>
-                </div>
+                <img 
+                  src={region2} 
+                  alt="Regenerative Wellness" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                 Regenerative Wellness

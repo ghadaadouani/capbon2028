@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { usePageContent } from '../../hooks/usePageContent';
 import FAQ from '../../components/FAQ';
+import Regenerative from '../../assets/Regenerative.jpg';
+import Roadmap from '../../assets/Roadmap.png';
 
 const candidacyPillars = [
   { id: 1, title: "Feeding the Planet", desc: "Protecting biodiversity and ancestral white wheat." },
@@ -120,11 +122,13 @@ const Candidature = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-video bg-brand-forest/5 rounded-3xl overflow-hidden border border-brand-forest/10 relative group shadow-lg">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base">
-                    {t('candidacyPage.roadmapCaption')}
-                  </span>
-                </div>
+                <img 
+                  src={Roadmap} 
+                  alt="Roadmap 2025-2030" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center">
                 Roadmap 2025-2030
@@ -139,11 +143,13 @@ const Candidature = () => {
               className="flex flex-col gap-4"
             >
               <div className="aspect-square bg-brand-sage/5 rounded-3xl overflow-hidden border border-brand-forest/10 relative group shadow-lg">
-                <div className="absolute inset-0 flex items-center justify-center p-12 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                  <span className="text-brand-deep/40 font-serif italic text-base">
-                    {t('candidacyPage.splitCaption')}
-                  </span>
-                </div>
+                <img 
+                  src={Regenerative} 
+                  alt="Regenerative Shift" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center">
                 Regenerative Shift

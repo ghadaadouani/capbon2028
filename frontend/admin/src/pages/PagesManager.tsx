@@ -3,6 +3,69 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { Save, AlertCircle, Image as ImageIcon, ExternalLink, Eye, EyeOff, Check, X, Plus, FileText, Trash2 } from 'lucide-react';
 import MediaPicker from '../components/MediaPicker';
+import HomePageFields from './HomePageFields';
+import ItinerariesPageFields from './ItinerariesPageFields';
+
+interface ItineraryCard {
+  id: string;
+  number: string;
+  title: string;
+  description: string;
+}
+
+interface CTAButton {
+  id: string;
+  label: string;
+  url: string;
+  style: 'filled' | 'outline';
+}
+
+interface ImageCard {
+  id: string;
+  image_url: string;
+  caption: string;
+}
+
+interface ItineraryData {
+  hero: {
+    label_en: string;
+    label_fr: string;
+    title_en: string;
+    title_fr: string;
+    subtitle_line_1_en: string;
+    subtitle_line_1_fr: string;
+    subtitle_line_2_en: string;
+    subtitle_line_2_fr: string;
+    body_text_en: string;
+    body_text_fr: string;
+  };
+  cards: ItineraryCard[];
+  body_paragraph_en: string;
+  body_paragraph_fr: string;
+  cta_buttons: CTAButton[];
+  image_cards: ImageCard[];
+}
+
+// Module-level constants for section arrays to prevent recreation on every render
+const TITLE_SECTIONS = [
+  { label: 'Main Page Title', en: 'title_en', fr: 'title_fr' },
+  { label: 'Hero Subtitle 1', en: 'subtitle_1_en', fr: 'subtitle_1_fr' },
+  { label: 'Hero Subtitle 2', en: 'subtitle_2_en', fr: 'subtitle_2_fr' },
+];
+
+const BODY_SECTIONS = [
+  { label: 'Body 1 - Subtitle/Tertiary', en: 'body_1_en', fr: 'body_1_fr' },
+  { label: 'Body 2 - Tertiary/Heading', en: 'body_2_en', fr: 'body_2_fr' },
+];
+
+const BODY_PARAGRAPH_SECTIONS = [
+  { label: 'Body 3 - Paragraph 1', en: 'body_3_en', fr: 'body_3_fr' },
+  { label: 'Body 4 - Paragraph 2', en: 'body_4_en', fr: 'body_4_fr' },
+];
+
+const SUBTITLE_3_SECTIONS = [
+  { label: 'Subtitle 3', en: 'subtitle_3_en', fr: 'subtitle_3_fr' },
+];
 
 const PagesManager = () => {
   const [pages, setPages] = useState<any[]>([]);
@@ -14,6 +77,38 @@ const PagesManager = () => {
   const [showToast, setShowToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
   const [activeImageField, setActiveImageField] = useState<string | null>(null);
+  
+  // Itineraries structured data state
+  const [itinerariesData, setItinerariesData] = useState<ItineraryData>({
+    hero: {
+      label_en: '',
+      label_fr: '',
+      title_en: '',
+      title_fr: '',
+      subtitle_line_1_en: '',
+      subtitle_line_1_fr: '',
+      subtitle_line_2_en: '',
+      subtitle_line_2_fr: '',
+      body_text_en: '',
+      body_text_fr: ''
+    },
+    cards: [
+      { id: '1', number: '01', title: '', description: '' },
+      { id: '2', number: '02', title: '', description: '' },
+      { id: '3', number: '03', title: '', description: '' },
+      { id: '4', number: '04', title: '', description: '' }
+    ],
+    body_paragraph_en: '',
+    body_paragraph_fr: '',
+    cta_buttons: [
+      { id: '1', label: '', url: '', style: 'filled' },
+      { id: '2', label: '', url: '', style: 'outline' }
+    ],
+    image_cards: [
+      { id: '1', image_url: '', caption: '' },
+      { id: '2', image_url: '', caption: '' }
+    ]
+  });
   
   // Create Page State
   const [isCreating, setIsCreating] = useState(false);
@@ -28,7 +123,61 @@ const PagesManager = () => {
 
   useEffect(() => {
     if (selectedPage) {
-      setFormData({ ...selectedPage });
+      const cleanQuillHTML = (html: string): string => {
+        if (!html || typeof html !== 'string') return html;
+        return html
+          .replace(/&nbsp;/g, ' ')
+          .replace(/<p><br><\/p>/g, '')
+          .replace(/<p>\s*<\/p>/g, '')
+          .trim();
+      };
+
+      const cleaned = { ...selectedPage };
+      [
+        'body_1_en', 'body_1_fr', 'body_2_en', 'body_2_fr',
+        'body_3_en', 'body_3_fr', 'body_4_en', 'body_4_fr',
+        'shakshouka_p1_en', 'shakshouka_p1_fr', 'shakshouka_p2_en', 'shakshouka_p2_fr',
+        'reversal_p1_en', 'reversal_p1_fr', 'reversal_p2_en', 'reversal_p2_fr',
+      ].forEach(field => {
+        if (cleaned[field]) cleaned[field] = cleanQuillHTML(cleaned[field]);
+      });
+
+      setFormData(cleaned);
+      
+      // Parse itineraries structured data if it exists
+      if (selectedPage.itineraries_data) {
+        try {
+          const parsed: ItineraryData = JSON.parse(selectedPage.itineraries_data);
+          setItinerariesData({
+            hero: parsed.hero || {
+              label_en: '',
+              label_fr: '',
+              title_en: '',
+              title_fr: '',
+              subtitle_line_1_en: '',
+              subtitle_line_1_fr: '',
+              subtitle_line_2_en: '',
+              subtitle_line_2_fr: '',
+              body_text_en: '',
+              body_text_fr: ''
+            },
+            cards: parsed.cards || [],
+            body_paragraph_en: parsed.body_paragraph_en || '',
+            body_paragraph_fr: parsed.body_paragraph_fr || '',
+            cta_buttons: parsed.cta_buttons || [
+              { id: '1', label: '', url: '', style: 'filled' },
+              { id: '2', label: '', url: '', style: 'outline' }
+            ],
+            image_cards: parsed.image_cards || [
+              { id: '1', image_url: '', caption: '' },
+              { id: '2', image_url: '', caption: '' }
+            ]
+          });
+        } catch (e: any) {
+          console.error('Failed to parse itineraries_data:', e);
+        }
+      }
+      
       setIsDirty(false);
     }
   }, [selectedPage]);
@@ -131,25 +280,60 @@ const PagesManager = () => {
     if (!formData) return;
     setSaving(true);
     try {
+      // Include itineraries_data if this is the itineraries page
+      const saveData = { ...formData };
+      if (formData.slug === 'itineraries') {
+        saveData.itineraries_data = JSON.stringify(itinerariesData);
+      }
+
+      // Clean &nbsp; and empty Quill paragraphs before saving
+      const cleanQuillHTML = (html: string): string => {
+        if (!html || typeof html !== 'string') return html;
+        return html
+          .replace(/&nbsp;/g, ' ')           // replace non-breaking spaces with normal spaces
+          .replace(/<p><br><\/p>/g, '')       // remove empty Quill paragraphs
+          .replace(/<p>\s*<\/p>/g, '')        // remove whitespace-only paragraphs
+          .trim();
+      };
+
+      // Apply cleaner to all string fields that come from Quill editors
+      const quillFields = [
+        'body_1_en', 'body_1_fr', 'body_2_en', 'body_2_fr',
+        'body_3_en', 'body_3_fr', 'body_4_en', 'body_4_fr',
+        'shakshouka_p1_en', 'shakshouka_p1_fr',
+        'shakshouka_p2_en', 'shakshouka_p2_fr',
+        'reversal_p1_en', 'reversal_p1_fr',
+        'reversal_p2_en', 'reversal_p2_fr',
+      ];
+      quillFields.forEach(field => {
+        if (saveData[field]) {
+          saveData[field] = cleanQuillHTML(saveData[field]);
+        }
+      });
+      
+      console.log('Saving data:', saveData);
       const res = await fetch(`/api/pages/${formData.id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(saveData)
       });
+      
       if (res.ok) {
         setShowToast({ message: 'Changes saved successfully', type: 'success' });
         setIsDirty(false);
         fetchPages(); // Update sidebar info
         setTimeout(() => setShowToast(null), 3000);
       } else {
-        throw new Error('Save failed');
+        const errorText = await res.text();
+        console.error('Save failed with status:', res.status, errorText);
+        throw new Error(`Save failed: ${res.status} - ${errorText}`);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Save failed', err);
-      setShowToast({ message: 'Save failed — please try again', type: 'error' });
+      setShowToast({ message: `Save failed: ${err.message || 'please try again'}`, type: 'error' });
       setTimeout(() => setShowToast(null), 3000);
     } finally {
       setSaving(false);
@@ -205,6 +389,9 @@ const PagesManager = () => {
       ['link'],
       ['clean']
     ],
+    clipboard: {
+      matchVisual: false,  // prevents Quill from converting spaces to &nbsp; on paste
+    },
   };
 
   if (loading) return <div className="h-full flex items-center justify-center py-20 text-gray-400 bg-white">Loading site pages...</div>;
@@ -365,18 +552,14 @@ const PagesManager = () => {
 
             <div className="grid grid-cols-2 gap-8">
               {/* Content Sections */}
-              {[
-                { label: 'Main Page Title', en: 'title_en', fr: 'title_fr' },
-                { label: 'Hero Subtitle 1', en: 'subtitle_1_en', fr: 'subtitle_1_fr' },
-                { label: 'Hero Subtitle 2', en: 'subtitle_2_en', fr: 'subtitle_2_fr' },
-              ].map((section) => (
+              {TITLE_SECTIONS.map((section) => (
                 <React.Fragment key={section.en}>
                   <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                     <label className="block text-[10px] font-black tracking-widest text-gray-400 uppercase mb-3">{section.label}</label>
                     <input 
                       className="w-full p-4 bg-gray-50 border border-transparent rounded-xl text-lg font-serif italic outline-none focus:bg-white focus:border-blue-500 transition-all"
                       value={formData[section.en] || ''}
-                      onChange={(e) => handleInputChange(section.en, e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(section.en, e.target.value)}
                       placeholder={`Enter ${section.label}...`}
                     />
                   </div>
@@ -385,25 +568,49 @@ const PagesManager = () => {
                     <input 
                       className="w-full p-4 bg-gray-50 border border-transparent rounded-xl text-lg font-serif italic outline-none focus:bg-white focus:border-red-500 transition-all"
                       value={formData[section.fr] || ''}
-                      onChange={(e) => handleInputChange(section.fr, e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(section.fr, e.target.value)}
                       placeholder={`Entrez le ${section.label.toLowerCase()}...`}
                     />
                   </div>
                 </React.Fragment>
               ))}
 
+              {/* Section Header: Hero */}
+              <div className="col-span-full mt-8 mb-4">
+                <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                  <h3 className="text-green-700 font-bold uppercase tracking-wider text-sm">Hero Section</h3>
+                  <p className="text-gray-600 text-xs mt-1">Main Title, Subtitle 1 (Hero desc), Button 1 (CTA)</p>
+                </div>
+              </div>
+
+              {/* Homepage-specific sections - only show for home page */}
+              {formData?.slug === 'home' && (
+                <HomePageFields formData={formData} handleInputChange={handleInputChange} />
+              )}
+
+              {/* Itineraries-specific sections - only show for itineraries page */}
+              {formData?.slug === 'itineraries' && (
+                <ItinerariesPageFields
+                  itinerariesData={itinerariesData}
+                  setItinerariesData={setItinerariesData}
+                  mediaPickerOpen={mediaPickerOpen}
+                  setMediaPickerOpen={setMediaPickerOpen}
+                  activeImageField={activeImageField}
+                  setActiveImageField={setActiveImageField}
+                  setIsDirty={setIsDirty}
+                />
+              )}
+
+
               {/* Rich Text Blocks */}
-              {[
-                { label: 'Primary Body Paragraph', en: 'body_1_en', fr: 'body_1_fr' },
-                { label: 'Secondary Body Block', en: 'body_2_en', fr: 'body_2_fr' },
-              ].map((section) => (
+              {BODY_SECTIONS.map((section) => (
                 <React.Fragment key={section.en}>
                   <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                     <label className="block text-[10px] font-black tracking-widest text-gray-400 uppercase mb-3">{section.label}</label>
                     <ReactQuill 
                       theme="snow"
                       value={formData[section.en] || ''}
-                      onChange={(val) => handleInputChange(section.en, val)}
+                      onChange={(val: string) => handleInputChange(section.en, val)}
                       modules={quillModules}
                       className="rounded-xl overflow-hidden"
                     />
@@ -413,7 +620,7 @@ const PagesManager = () => {
                     <ReactQuill 
                       theme="snow"
                       value={formData[section.fr] || ''}
-                      onChange={(val) => handleInputChange(section.fr, val)}
+                      onChange={(val: string) => handleInputChange(section.fr, val)}
                       modules={quillModules}
                       className="rounded-xl overflow-hidden"
                     />
@@ -545,18 +752,23 @@ const PagesManager = () => {
                 </React.Fragment>
               ))}
 
+              {/* Section Header: Mediterranean Reversal Paragraphs */}
+              <div className="col-span-full mt-8 mb-4">
+                <div className="bg-brand-red/5 border-l-4 border-brand-red/50 p-4 rounded-r-lg">
+                  <h3 className="text-brand-red/80 font-bold uppercase tracking-wider text-sm">Mediterranean Reversal - Paragraphs</h3>
+                  <p className="text-gray-600 text-xs mt-1">Paragraph 1 (Body 3) and Paragraph 2 (Body 4)</p>
+                </div>
+              </div>
+
               {/* Additional Body Sections */}
-              {[
-                { label: 'Extended Content Block 1', en: 'body_3_en', fr: 'body_3_fr' },
-                { label: 'Extended Content Block 2', en: 'body_4_en', fr: 'body_4_fr' },
-              ].map((section) => (
+              {BODY_PARAGRAPH_SECTIONS.map((section) => (
                 <React.Fragment key={section.en}>
                   <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                     <label className="block text-[10px] font-black tracking-widest text-gray-400 uppercase mb-3">{section.label}</label>
                     <ReactQuill 
                       theme="snow"
                       value={formData[section.en] || ''}
-                      onChange={(val) => handleInputChange(section.en, val)}
+                      onChange={(val: string) => handleInputChange(section.en, val)}
                       modules={quillModules}
                       className="rounded-xl overflow-hidden"
                     />
@@ -566,7 +778,7 @@ const PagesManager = () => {
                     <ReactQuill 
                       theme="snow"
                       value={formData[section.fr] || ''}
-                      onChange={(val) => handleInputChange(section.fr, val)}
+                      onChange={(val: string) => handleInputChange(section.fr, val)}
                       modules={quillModules}
                       className="rounded-xl overflow-hidden"
                     />
@@ -574,17 +786,23 @@ const PagesManager = () => {
                 </React.Fragment>
               ))}
 
+              {/* Section Header: Other Sections */}
+              <div className="col-span-full mt-8 mb-4">
+                <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                  <h3 className="text-blue-700 font-bold uppercase tracking-wider text-sm">Additional Sections</h3>
+                  <p className="text-gray-600 text-xs mt-1">Used by Red Gold & Fragrance, Area of Month, etc.</p>
+                </div>
+              </div>
+
               {/* Additional Subtitle Section */}
-              {[
-                { label: 'Subtitle 3', en: 'subtitle_3_en', fr: 'subtitle_3_fr' },
-              ].map((section) => (
+              {SUBTITLE_3_SECTIONS.map((section) => (
                 <React.Fragment key={section.en}>
                   <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                     <label className="block text-[10px] font-black tracking-widest text-gray-400 uppercase mb-3">{section.label}</label>
                     <input 
                       className="w-full p-4 bg-gray-50 border border-transparent rounded-xl text-lg font-serif italic outline-none focus:bg-white focus:border-blue-500 transition-all"
                       value={formData[section.en] || ''}
-                      onChange={(e) => handleInputChange(section.en, e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(section.en, e.target.value)}
                       placeholder={`Enter ${section.label}...`}
                     />
                   </div>
@@ -593,7 +811,7 @@ const PagesManager = () => {
                     <input 
                       className="w-full p-4 bg-gray-50 border border-transparent rounded-xl text-lg font-serif italic outline-none focus:bg-white focus:border-red-500 transition-all"
                       value={formData[section.fr] || ''}
-                      onChange={(e) => handleInputChange(section.fr, e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(section.fr, e.target.value)}
                       placeholder={`Entrez le ${section.label.toLowerCase()}...`}
                     />
                   </div>

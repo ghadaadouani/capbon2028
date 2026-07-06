@@ -9,7 +9,6 @@ const About = lazy(() => import('./pages/region/About'));
 const Partners = lazy(() => import('./pages/region/Partners'));
 const Candidature = lazy(() => import('./pages/region/Candidature'));
 const Products = lazy(() => import('./pages/gastronomy/Products'));
-const Specialities = lazy(() => import('./pages/gastronomy/Specialities'));
 const ArtisanalCrafts = lazy(() => import('./pages/gastronomy/ArtisanalCrafts'));
 const Itineraries = lazy(() => import('./pages/tourism/Itineraries'));
 const Accommodations = lazy(() => import('./pages/tourism/Accommodations'));
@@ -25,10 +24,12 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Loading = () => (
   <div className="fixed inset-0 bg-dark flex items-center justify-center z-[99998]">
     <div className="text-center">
-      <span className="font-serif italic text-[18px] text-white/50 tracking-[0.3em] uppercase">Discover</span>
-      <div className="font-serif text-[72px] font-light text-white mt-2">
-        <span className="text-green">C</span>ap <span className="text-red">B</span>on
-      </div>
+      <img 
+        src="/logo.png" 
+        alt="Discover Cap Bon" 
+        className="h-16 w-auto mx-auto mb-4"
+      />
+      <span className="font-serif italic text-[18px] text-white/50 tracking-[0.3em] uppercase">Discover Cap Bon</span>
     </div>
   </div>
 );
@@ -45,8 +46,8 @@ function App() {
               <Route path="/la-region/partners" element={<Partners />} />
               <Route path="/la-region/projet-candidature" element={<Candidature />} />
               <Route path="/gastronomie/produits-phares" element={<Products />} />
-              <Route path="/gastronomie/plats-specialites" element={<Specialities />} />
-              <Route path="/gastronomie/les-arts-du-cap-bon" element={<ArtisanalCrafts />} />
+                            <Route path="/gastronomie/les-arts-du-cap-bon" element={<ArtisanalCrafts />} />
+              
               <Route path="/tourisme/itineraires" element={<Itineraries />} />
               <Route path="/tourisme/hebergements" element={<Accommodations />} />
               <Route path="/tourisme/tables-d-hotes" element={<Restaurants />} />

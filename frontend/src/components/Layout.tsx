@@ -60,7 +60,7 @@ const Navbar = () => {
       dropdown: [
         { label: t('nav.artisanalCrafts'), href: '/gastronomie/les-arts-du-cap-bon' },
         { label: t('nav.flagship'), href: '/gastronomie/produits-phares' },
-        { label: t('nav.specialities'), href: '/gastronomie/plats-specialites' },
+        
       ],
     },
     {
@@ -91,8 +91,12 @@ const Navbar = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-brand-deep/30 to-transparent pointer-events-none z-[-1]" />
       )}
       
-      <Link to="/" className={`font-serif text-xl md:text-2xl no-underline transition-colors duration-300 ${scrolled || mobileMenuOpen ? 'text-brand-deep' : 'text-white'}`}>
-        <span className="text-brand-forest">Cap</span><span className="text-brand-red">Bon</span> <span className="hidden sm:inline">Discover</span>
+      <Link to="/" className="flex items-center gap-2 no-underline transition-colors duration-300">
+        <img 
+          src="/logo.png" 
+          alt="Discover Cap Bon" 
+          className={`h-8 w-auto transition-all duration-300 ${scrolled || mobileMenuOpen ? 'opacity-100' : 'opacity-100'}`}
+        />
       </Link>
 
       <div className="hidden md:flex gap-8 lg:gap-12 items-center">
@@ -179,8 +183,12 @@ const Footer = () => {
       <div className="container-custom">
         <div className="flex flex-wrap justify-between items-start gap-10">
           <div className="max-w-[300px]">
-            <div className="font-serif text-xl mb-6">
-              <span className="text-brand-sage">Cap</span><span className="text-brand-red">Bon</span> Discover
+            <div className="mb-6">
+              <img 
+                src="/logo.png" 
+                alt="Discover Cap Bon" 
+                className="h-10 w-auto"
+              />
             </div>
             <p className="text-white/50 text-sm leading-relaxed">
               {t('footer.tagline')}. {language === 'fr' ? 'Candidate Région Mondiale de Gastronomie 2028' : 'World Region of Gastronomy Candidate 2028'}.

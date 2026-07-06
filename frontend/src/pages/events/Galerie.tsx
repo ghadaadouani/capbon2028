@@ -5,6 +5,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { galleryItems, GalleryCategory } from '../../data/gallery';
 import Lightbox from '../../components/Lightbox';
 import { usePageContent } from '../../hooks/usePageContent';
+import hands1 from '../../assets/hands1.jpeg';
+import image1 from '../../assets/image1.png';
 
 const Galerie = () => {
   const { language, t } = useLanguage();
@@ -48,24 +50,8 @@ const Galerie = () => {
     (activeCategory === 'All' || item.category === activeCategory)
   );
 
-  const videos: any[] = [
-    {
-      id: "v1",
-      src: "https://images.unsplash.com/photo-1590494056263-d8c5478417c8?auto=format&fit=crop&q=80&w=800",
-      alt: { en: "Cap Bon: Heart of the Mediterranean", fr: "Cap Bon : Cœur de la Méditerranée" },
-      category: "Landscape" as GalleryCategory,
-      type: "video",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Placeholder
-    },
-    {
-      id: "v2",
-      src: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&q=80&w=800",
-      alt: { en: "The Couscous Tradition", fr: "La Tradition du Couscous" },
-      category: "Food" as GalleryCategory,
-      type: "video",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Placeholder
-    }
-  ];
+  // Videos will be populated via the Media Library once video URLs are added
+  const videos: any[] = [];
 
   const currentItems: any[] = activeTab === 'photos' ? photos : videos;
 
@@ -122,11 +108,13 @@ const Galerie = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
               <div className="flex flex-col gap-4">
                 <div className="aspect-video bg-brand-forest/5 rounded-3xl overflow-hidden relative group shadow-2xl border border-brand-forest/10">
-                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                    <span className="text-brand-deep/40 font-serif italic text-base lg:text-lg px-6">
-                      {t('galleryIntro.img1Caption')}
-                    </span>
-                  </div>
+                  <img 
+                    src={hands1} 
+                    alt="Documenting Nabeul Pottery" 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                   Documenting Nabeul Pottery (May 2026)
@@ -134,17 +122,19 @@ const Galerie = () => {
               </div>
 
               <div className="flex flex-col gap-4">
-                <div className="aspect-video bg-brand-deep rounded-3xl overflow-hidden relative group shadow-2xl flex items-center justify-center border border-brand-forest/10">
+                <div className="aspect-video bg-brand-deep rounded-3xl overflow-hidden relative group shadow-2xl border border-brand-forest/10">
+                  <img 
+                    src={image1} 
+                    alt="Food Film Menu Entry" 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                   <div className="absolute inset-0 flex items-center justify-center bg-brand-deep/20 backdrop-blur-[1px] z-10">
                     <div className="w-16 h-16 flex items-center justify-center rounded-full bg-white text-brand-deep shadow-2xl scale-100 group-hover:scale-110 transition-transform">
                       <Play className="w-6 h-6 fill-current ml-1" />
                     </div>
                   </div>
-                  <div className="p-12 text-center relative z-0">
-                    <span className="text-brand-sage/40 font-serif italic text-base lg:text-lg block mb-2 px-8">
-                      {t('galleryIntro.videoCaption')}
-                    </span>
-                  </div>
+                  <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                   "Food Film Menu" Entry
@@ -152,16 +142,7 @@ const Galerie = () => {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-6 mb-24">
-              <button className="btn btn-primary px-8" onClick={(e) => e.preventDefault()}>
-                {dynamicContent ? (language === 'fr' ? dynamicContent.button_1_label_fr : dynamicContent.button_1_label_en) : t('galleryIntro.ctaWatch')}
-              </button>
-              <button className="btn btn-outline px-8" onClick={(e) => e.preventDefault()}>
-                {dynamicContent ? (language === 'fr' ? dynamicContent.button_2_label_fr : dynamicContent.button_2_label_en) : t('galleryIntro.ctaApply')}
-              </button>
             </div>
-          </div>
         </motion.div>
       </section>
 
@@ -214,6 +195,22 @@ const Galerie = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Empty state for Videos tab */}
+      {activeTab === 'videos' && videos.length === 0 && (
+        <section className="container-custom px-6 pb-24 text-center">
+          <div className="py-24 border border-dashed border-brand-forest/20 rounded-2xl">
+            <p className="text-brand-deep/40 font-serif italic text-xl mb-3">
+              {language === 'fr' ? 'Les vidéos arrivent bientôt.' : 'Videos coming soon.'}
+            </p>
+            <p className="text-brand-deep/25 text-sm">
+              {language === 'fr'
+                ? "Ajoutez des URL vidéo via la médiathèque pour qu'elles apparaissent ici."
+                : 'Add video URLs via the Media Library to have them appear here.'}
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* Grid */}
       <section className="container-custom pb-32 px-6">

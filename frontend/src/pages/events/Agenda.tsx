@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import Calendar from '../../components/Calendar';
+import Festival from '../../assets/Festival.jpg';
+import harvest from '../../assets/harvest.jpg';
 
 const AgendaPage = () => {
   const { language, t } = useLanguage();
@@ -59,11 +61,13 @@ const AgendaPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">
               <div className="flex flex-col gap-4">
                 <div className="aspect-video bg-brand-forest/5 rounded-3xl overflow-hidden relative group shadow-2xl border border-brand-forest/10">
-                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                    <span className="text-brand-deep/40 font-serif italic text-base">
-                      {t('agendaIntro.img1Caption')}
-                    </span>
-                  </div>
+                  <img 
+                    src={Festival} 
+                    alt="Festival of Harissa" 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                   Festival of Harissa (October)
@@ -71,11 +75,13 @@ const AgendaPage = () => {
               </div>
               <div className="flex flex-col gap-4">
                 <div className="aspect-video bg-brand-forest/5 rounded-2xl overflow-hidden relative group shadow-2xl border border-brand-forest/10">
-                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center bg-brand-deep/5 backdrop-blur-[2px]">
-                    <span className="text-brand-deep/40 font-serif italic text-base">
-                      {t('agendaIntro.img2Caption')}
-                    </span>
-                  </div>
+                  <img 
+                    src={harvest} 
+                    alt="Orange Blossom Harvest" 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <p className="text-[10px] uppercase font-bold tracking-widest text-brand-forest/60 text-center px-4">
                   Orange Blossom Harvest (April)

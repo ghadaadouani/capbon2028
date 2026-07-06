@@ -1,6 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
+import hands1 from '../../assets/hands1.jpeg';
+import hands2 from '../../assets/hands2.jpeg';
+import fruit1 from '../../assets/fruit1.jpg';
+import fruit2 from '../../assets/fruit2.jpeg';
+import chilis1 from '../../assets/chilis1.jpg';
+import chilis2 from '../../assets/chilis2.jpg';
+import harissa1 from '../../assets/harissa1.png';
+import harissa2 from '../../assets/harissa2.jpg';
 
 const ArtisanalCrafts = () => {
   const { language, t } = useLanguage();
@@ -149,7 +157,7 @@ const ArtisanalCrafts = () => {
                 </div>
               </motion.div>
 
-              {/* Image Placeholders */}
+              {/* Images */}
               <motion.div
                 initial={{ opacity: 0, x: index % 2 === 0 ? 30 : -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -158,19 +166,41 @@ const ArtisanalCrafts = () => {
                 className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${index % 2 === 0 ? "lg:order-2" : "lg:order-1"}`}
               >
                 <div className="aspect-[4/5] bg-brand-sage/10 rounded-xl overflow-hidden relative group">
-                  <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
-                    <span className="text-brand-deep/30 font-serif italic text-sm">
-                      {index === 0 ? "Hands centering clay" : index === 1 ? "Mā’ zahar drop from Alembic" : index === 2 ? "Mehraz with red chilies" : "Hands rolling semolina"}
-                    </span>
-                  </div>
+                  <img 
+                    src={
+                      index === 0 ? hands1 :
+                      index === 1 ? fruit1 :
+                      index === 2 ? chilis1 :
+                      harissa1
+                    } 
+                    alt={
+                      index === 0 ? "Hands centering clay" :
+                      index === 1 ? "Mā' zahar drop from Alembic" :
+                      index === 2 ? "Mehraz with red chilies" :
+                      "Hands rolling semolina"
+                    } 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                   <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <div className="aspect-[4/5] bg-brand-forest/10 rounded-xl overflow-hidden relative group translate-y-8 sm:translate-y-12">
-                   <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
-                    <span className="text-brand-deep/30 font-serif italic text-sm">
-                      {index === 0 ? "Couscoussiers drying" : index === 1 ? "Baskets of orange blossoms" : index === 2 ? "Teaching next generation" : "Weaving Hassira mat"}
-                    </span>
-                  </div>
+                  <img 
+                    src={
+                      index === 0 ? hands2 :
+                      index === 1 ? fruit2 :
+                      index === 2 ? chilis2 :
+                      harissa2
+                    } 
+                    alt={
+                      index === 0 ? "Couscoussiers drying" :
+                      index === 1 ? "Baskets of orange blossoms" :
+                      index === 2 ? "Teaching next generation" :
+                      "Weaving Hassira mat"
+                    } 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                   <div className="absolute inset-0 bg-brand-forest/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
               </motion.div>

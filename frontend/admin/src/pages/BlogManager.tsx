@@ -109,6 +109,7 @@ const BlogManager = () => {
       body_en: '',
       body_fr: '',
       author: 'Admin',
+      category: '',
       is_published: false,
       published_at: null,
       cover_image_id: null,
@@ -204,6 +205,7 @@ const BlogManager = () => {
                 <div className="text-right">
                   <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Author</div>
                   <div className="text-xs font-medium text-gray-600">{post.author}</div>
+                  {post.category && <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-brand-red/80 bg-red-50 rounded px-2 py-0.5 inline-block">{post.category}</div>}
                 </div>
                 <div className="flex gap-2">
                   <button 
@@ -387,7 +389,7 @@ const BlogManager = () => {
                   <p className="text-[9px] text-gray-400 mt-2 px-1">Friendly for SEO: words-separated-by-dashes</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                    <div>
                      <label className="block text-[10px] font-black tracking-widest text-gray-400 uppercase mb-2">Author</label>
                      <input 
@@ -395,6 +397,21 @@ const BlogManager = () => {
                       value={formData.author || ''}
                       onChange={(e) => handleInputChange('author', e.target.value)}
                     />
+                   </div>
+                   <div>
+                     <label className="block text-[10px] font-black tracking-widest text-gray-400 uppercase mb-2">Category</label>
+                     <select
+                      className="w-full p-3 bg-gray-50 border border-transparent rounded-lg text-xs font-bold outline-none focus:bg-white focus:border-red-100"
+                      value={formData.category || ''}
+                      onChange={(e) => handleInputChange('category', e.target.value)}
+                     >
+                       <option value="">— Select —</option>
+                       <option value="Gastronomy">Gastronomy</option>
+                       <option value="Culture">Culture</option>
+                       <option value="Tourism">Tourism</option>
+                       <option value="Environment">Environment</option>
+                       <option value="News">News</option>
+                     </select>
                    </div>
                    <div>
                      <label className="block text-[10px] font-black tracking-widest text-gray-400 uppercase mb-2">Date</label>

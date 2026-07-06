@@ -24,7 +24,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ article }) => {
   const { language } = useLanguage();
   const title = language === 'fr' ? article.title_fr : article.title_en;
   const excerpt = language === 'fr' ? article.excerpt_fr : article.excerpt_en;
-  const date = (article.published_at || article.created_at || '').split('T')[0];
+  const rawDate = article.published_at || article.created_at || '';
+  const date = rawDate
+    ? new Date(rawDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+    : '';
 
   return (
     <motion.div
