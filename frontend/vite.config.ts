@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/capbon-2028/', // must match your GitHub repo name exactly (case-sensitive)
   plugins: [
     react(),
     tailwindcss(),
