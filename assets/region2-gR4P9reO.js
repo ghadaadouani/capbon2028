@@ -1,0 +1,1 @@
+var e=`/capbon-2028/assets/region2-d2ZdgJxu.jpg`;export{e as t};

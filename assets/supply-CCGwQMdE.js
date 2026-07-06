@@ -1,0 +1,1 @@
+var e=`/capbon-2028/assets/supply-Cu3-ilna.jpg`;export{e as t};

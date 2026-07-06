@@ -1,0 +1,1 @@
+var e=`/capbon-2028/assets/hands1-CGeKC6jL.jpeg`;export{e as t};
